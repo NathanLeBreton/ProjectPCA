@@ -1,7 +1,7 @@
 #include "node.h"
 
 
-node_t* list_creat(void){
+node_t* list_create(void){
 	return NULL;
 }
 

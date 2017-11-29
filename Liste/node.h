@@ -11,7 +11,7 @@ struct node{
 };
 
 
-node_t *list_create(void);
+node_t *list_create();
 node_t *creer_noeud(void);
 void * list_get_data(const node_t *node);
 void list_set_data(node_t *node, void *data);

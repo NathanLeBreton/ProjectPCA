@@ -1,6 +1,6 @@
 #include "cellule.h"
 
-void AnalyseChaine(s_cellule *cellule){
+void analyseChaine(s_cellule *cellule){
 	char *chaine = strdup(cellule->chaine);
 	char *tok = strtok(chaine," ");	
 
@@ -13,7 +13,7 @@ void AnalyseChaine(s_cellule *cellule){
 	}
 
 }
-void EvaluerChaine(s_cellule *c){
+void evaluerChaine(s_cellule *c){
 
 
 }

@@ -1,3 +1,6 @@
+#ifndef _CELL_H
+#define _CELL_H
+
 #include "../Liste/node.h"
 #include "../Pile/pile.h"
 #include <string.h>
@@ -18,7 +21,7 @@ typedef struct token{
 }s_token;
 
 
-typedef struct cellule{
+struct cellule{
 	char *chaine;
 	double valeur;	
 	node_t *lesTokens;
@@ -33,8 +36,12 @@ typedef struct feuilleCalcul{
 	node_t *lesCellules;
 }s_feuilleCalcul;
 
+struct Operator {
 
-void AnalyseChaine(s_cellule *c);
-void EvaluerChaine(s_cellule *c);
+};
 
 
+void analyseChaine(s_cellule *c);
+void evaluerChaine(s_cellule *c);
+
+#endif //_CELL_H
