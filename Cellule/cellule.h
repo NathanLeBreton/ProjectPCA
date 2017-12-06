@@ -4,44 +4,50 @@
 #include "../Liste/node.h"
 #include "../Pile/pile.h"
 #include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 
+typedef struct cellule{
+    char* nom;
+    char *chaine;
+    double valeur;
+    node_t* token;
+    node_t* refcellule;
 
-typedef struct cellule s_cellule;
+    int nombreDeToken;
+}s_cellule;
+
+typedef struct operateur{
+    char *nom;
+    void (*operator)(pile_t* element);
+}operateur_t;
 
 typedef struct token{
-	enum {
-	VALUE,REF,OPERATOR
-	} type;
-
-	union{
-		double cst;
-		s_cellule *ref;
-		void (*operator)(pile_t* eval);
-	} value;
+    enum {VALUE,REF,OPERATOR} type;
+    union {
+        double cst;
+        s_cellule* ref;
+        void(*operator)(pile_t* eval);
+    }value;
 }s_token;
 
-
-struct cellule{
-	char *chaine;
-	double valeur;	
-	node_t *lesTokens;
-	node_t *lesCellules;
-};
-
-
-typedef struct feuilleCalcul{
-	char *nomFichier;
-	int nbLigne;
-	int nbColonne;
-	node_t *lesCellules;
-}s_feuilleCalcul;
-
-struct Operator {
-
-};
+typedef struct feuille{
+    char *nom;
+    int ligne;
+    int colonnes;
+    node_t* listeCellules;
+}feuille_t;
 
 
-void analyseChaine(s_cellule *c);
-void evaluerChaine(s_cellule *c);
+void addition(pile_t* pile);
+void multiplication(pile_t* pile);
+void soustraction(pile_t* pile);
+void division(pile_t* pile);
+extern operateur_t operateur[4];
+extern feuille_t feuille;
+void initialisationOperateur();
+void analyse(s_cellule* cellule);
+void evaluation(s_cellule* cellule);
+
 
 #endif //_CELL_H
