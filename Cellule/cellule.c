@@ -28,6 +28,7 @@ void initialisationOperateur(){
 void analyse(s_cellule* cellule){
 
     double valeur = 0.0;
+    //creation de la liste de token de la cellule à analyser
     cellule->token = list_create();
     cellule->valeur = 0.0;
     cellule->nombreDeToken = 0;
@@ -39,12 +40,14 @@ void analyse(s_cellule* cellule){
     int testint;
     double testdouble;
 
-    char *chainecarac = strdup(cellule->chaine);
+    char *chaine = strdup(cellule->chaine);
 
-    char* tok = strtok(chainecarac," ");
+    char* tok = strtok(chaine," ");
 
+    //si la chaine de la cellule commence par le signe = :
     if(strcmp(tok,"=") == 0){
 
+        //on parcours la chaine
         while (tok != NULL) {
 
             valeur =strtod(tok, NULL);
@@ -64,9 +67,9 @@ void analyse(s_cellule* cellule){
                 cellule->nombreDeToken++;
 
             }
-
+            //on parcours le tableau des operateur
             for (int j = 0; j < 4; ++j) {
-
+                //on cherche l'operateur correspondant
                 if (strcmp(tok, operateur[j].nom) == 0) {
 
 
@@ -99,7 +102,7 @@ void analyse(s_cellule* cellule){
                 }
 
             }
-
+            //on avance dans le parcours de la chaine pour analyser les caractere suivant
             tok = strtok(NULL, " ");
 
         }
@@ -110,6 +113,7 @@ void analyse(s_cellule* cellule){
 
 void evaluation(s_cellule* cellule){
 
+    //l'evaluation est possible seulement si la liste de token de la cellule n'est pas vide ( apres l'analyse )
     if(cellule->token == NULL){
         return;
     }
@@ -123,14 +127,14 @@ void evaluation(s_cellule* cellule){
         token = list_get_data(listetoken);
 
         if(token->type == VALUE){
-            pile_empiler(pile, token->value.cst);
+          pile_empiler(pile, token->value.cst);
         }
         if(token->type == REF){
             celluleref = token->value.ref;
             pile_empiler(pile,celluleref->valeur);
         }
         if(token->type == OPERATOR){
-            token->value.operator(pile);
+          token->value.operator(pile);
         }
 
         listetoken = listetoken->suivant;
