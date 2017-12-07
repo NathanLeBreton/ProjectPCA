@@ -31,6 +31,7 @@ void analyseCellule(s_cellule* cellule){
     cellule->nbOper = 0;
     cellule->nbValue = 0;
     cellule->degrenegatif = 0;
+
     node_t *listeCelluleExistant = feuille.listeCellules;
 
     s_cellule* c = NULL;
@@ -99,7 +100,7 @@ void analyseCellule(s_cellule* cellule){
                         cellule->nbTok++;
                         cellule->nbValue++;
 
-                        dep->degrenegatif++;
+                        c->degrenegatif++;
                     }
 
                     listeCelluleExistant = listeCelluleExistant->suivant;
