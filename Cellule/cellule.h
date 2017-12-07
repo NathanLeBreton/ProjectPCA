@@ -11,10 +11,12 @@ typedef struct cellule{
     char* nom;
     char *chaine;
     double valeur;
-    node_t* token;
+    node_t* lesTokens;
     node_t* refcellule;
-
-    int nombreDeToken;
+    int nbTok;
+    int nbValue;
+    int nbOper;
+    int degrenegatif;
 }s_cellule;
 
 typedef struct operateur{
@@ -22,8 +24,13 @@ typedef struct operateur{
     void (*operator)(pile_t* element);
 }operateur_t;
 
+typedef enum Type Type;
+enum Type {VALUE,REF,OPERATOR};
+
 typedef struct token{
-    enum {VALUE,REF,OPERATOR} type;
+
+    Type type;
+
     union {
         double cst;
         s_cellule* ref;
@@ -39,15 +46,16 @@ typedef struct feuille{
 }feuille_t;
 
 
+extern operateur_t operateur[4];
+extern feuille_t feuille;
+void initialisationOperateur();
+void analyseCellule(s_cellule* cellule);
+void evaluation(s_cellule* cellule);
+
+
 void addition(pile_t* pile);
 void multiplication(pile_t* pile);
 void soustraction(pile_t* pile);
 void division(pile_t* pile);
-extern operateur_t operateur[4];
-extern feuille_t feuille;
-void initialisationOperateur();
-void analyse(s_cellule* cellule);
-void evaluation(s_cellule* cellule);
-
 
 #endif //_CELL_H

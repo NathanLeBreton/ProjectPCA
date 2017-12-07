@@ -7,104 +7,106 @@ void initialisationOperateur(){
 
     operateur[0].nom = "+";
     operateur[0].operator = &addition;
-
     operateur[1].nom = "*";
     operateur[1].operator = &multiplication;
-
     operateur[2].nom = "-";
     operateur[2].operator = &soustraction;
-
     operateur[3].nom = "/";
     operateur[3].operator = &division;
 
 
-
-    feuille.nom = "feuilletest";
-    feuille.colonnes = 26;
+    feuille.nom = "test";
+    feuille.colonnes = 50;
     feuille.ligne = 50;
 
 }
 
-void analyse(s_cellule* cellule){
+void analyseCellule(s_cellule* cellule){
 
-    double valeur = 0.0;
-    //creation de la liste de token de la cellule à analyser
-    cellule->token = list_create();
+    //initialisation des variables :
+    double v = 0.0;
+    cellule->lesTokens = list_create();
     cellule->valeur = 0.0;
-    cellule->nombreDeToken = 0;
+    cellule->nbTok = 0;
+    cellule->nbOper = 0;
+    cellule->nbValue = 0;
+    cellule->degrenegatif = 0;
     node_t *listeCelluleExistant = feuille.listeCellules;
+
     s_cellule* c = NULL;
     s_cellule* dep = listeCelluleExistant->valeur;
+    char char1;
+    int int1;
 
-    char testchar;
-    int testint;
-    double testdouble;
-
+    //dupliquer la chaine de la cellule
     char *chaine = strdup(cellule->chaine);
 
+    //scinde la chaine avec pour delimiter les espaces
     char* tok = strtok(chaine," ");
 
-    //si la chaine de la cellule commence par le signe = :
+    //si la chaine de la cellule commence par le signe "=" on l'analyse, sinon on ne fait rien
     if(strcmp(tok,"=") == 0){
 
-        //on parcours la chaine
+        //on parcours la chaine de la cellule
         while (tok != NULL) {
 
-            valeur =strtod(tok, NULL);
-
-            s_token *new = malloc(sizeof(s_token));
-            if (new == NULL){
+            s_token *nouvToken = malloc(sizeof(s_token));
+            if (nouvToken == NULL){
                 return;
             }
 
+            v = strtod(tok, NULL);
+            //si l'element de la chaine est une valeur
+            if (sscanf(tok,"%lf",&c)==1) {
 
-            if (valeur != 0.0) {
-
-                new->type = VALUE;
-                new->value.cst = valeur;
-                cellule->token = list_append(cellule->token, new);
-
-                cellule->nombreDeToken++;
+                nouvToken->type = VALUE;
+                nouvToken->value.cst = v;
+                cellule->lesTokens = list_append(cellule->lesTokens, nouvToken); //on ajoute la valeur dans la liste des tokens de la cellule
+                cellule->nbTok++;
+                cellule->nbValue++;
 
             }
+
             //on parcours le tableau des operateur
             for (int j = 0; j < 4; ++j) {
                 //on cherche l'operateur correspondant
                 if (strcmp(tok, operateur[j].nom) == 0) {
 
 
-                    new->type = OPERATOR;
-                    new->value.operator = operateur[j].operator;
-
-                    cellule->token = list_append(cellule->token, new);
-                    cellule->nombreDeToken++;
+                    nouvToken->type = OPERATOR;
+                    nouvToken->value.operator = operateur[j].operator;
+                    cellule->lesTokens = list_append(cellule->lesTokens, nouvToken);  //on ajoute l'operateur dans la liste des tokens de la cellule
+                    cellule->nbTok++;
+                    cellule->nbOper++;
                 }
             }
 
-
-            if((sscanf(tok,"%c%d",&testchar, &testint)==2) && (sscanf(tok,"%lf",&testdouble) != 1)){
+            //si le token est sous le format "CHAR INT" -> c'est une reference vers une autre cellule
+            if((sscanf(tok,"%c%d",&char1, &int1)==2)){
 
                 while (listeCelluleExistant->suivant != NULL) {
 
                     c = list_get_data(listeCelluleExistant);
 
+                    //on verifie que le nom de la cellule existe dans la feuille
                     if (strcmp(tok, c->nom) == 0) {
 
 
-                        new->type = REF;
-                        new->value.ref = listeCelluleExistant->valeur;
-                        cellule->token = list_append(cellule->token, new);
+                        nouvToken->type = REF;
+                        nouvToken->value.ref = listeCelluleExistant->valeur;
+                        cellule->lesTokens = list_append(cellule->lesTokens, nouvToken); //on ajoute la ref de cellule dans la liste des tokens de la cellule
                         dep->refcellule = list_insert(dep->refcellule, cellule);
-                        cellule->nombreDeToken++;
+                        cellule->nbTok++;
+                        cellule->nbValue++;
+
+                        dep->degrenegatif++;
                     }
 
                     listeCelluleExistant = listeCelluleExistant->suivant;
                 }
-
             }
             //on avance dans le parcours de la chaine pour analyser les caractere suivant
             tok = strtok(NULL, " ");
-
         }
     }
 
@@ -114,91 +116,90 @@ void analyse(s_cellule* cellule){
 void evaluation(s_cellule* cellule){
 
     //l'evaluation est possible seulement si la liste de token de la cellule n'est pas vide ( apres l'analyse )
-    if(cellule->token == NULL){
+    if(cellule->lesTokens == NULL){
         return;
     }
 
-    s_token* token = NULL;
-    s_cellule* celluleref;
-    node_t* listetoken = cellule->token;
-    pile_t* pile = pile_creer(cellule->nombreDeToken);
+    //si la formule de la cellule est correcte
+    if(cellule->nbValue==cellule->nbOper+1) {
 
-    for (int i = 0; i < cellule->nombreDeToken; ++i) {
-        token = list_get_data(listetoken);
+        s_token *token = NULL;
+        s_cellule *celluleref;
+        node_t *listetoken = cellule->lesTokens;
+        pile_t *pile = pile_creer(cellule->nbTok);
 
-        if(token->type == VALUE){
-          pile_empiler(pile, token->value.cst);
-        }
-        if(token->type == REF){
-            celluleref = token->value.ref;
-            pile_empiler(pile,celluleref->valeur);
-        }
-        if(token->type == OPERATOR){
-          token->value.operator(pile);
+
+        int i = 0;
+        while (i < cellule->nbTok) {
+
+            token = list_get_data(listetoken);
+
+            if (token->type == VALUE) {
+                pile_empiler(pile, token->value.cst);
+            }
+            if (token->type == REF) {
+                celluleref = token->value.ref;
+                pile_empiler(pile, celluleref->valeur);
+            }
+            if (token->type == OPERATOR) {
+                token->value.operator(pile);
+            }
+
+            listetoken = listetoken->suivant;
+            i++;
         }
 
-        listetoken = listetoken->suivant;
+        pile_depiler(pile, &cellule->valeur);
     }
-
-    pile_depiler(pile,&cellule->valeur);
-
     return;
 }
 
 //les fonctions de calcul :
 
-
+//ajoute la valeur de l'addiction dans la pile
 void addition(pile_t* pile){
-    double a , b, result;
-
+    double a , b, r;
     pile_depiler(pile,&a);
     pile_depiler(pile,&b);
 
-    result = a+b;
-
-    pile_empiler(pile,result);
+    r = a+b;
+    pile_empiler(pile,r);
 
     return;
 }
 
 void multiplication(pile_t* pile){
 
-    double a , b, result;
-
+    double a , b, r;
     pile_depiler(pile,&a);
     pile_depiler(pile,&b);
 
-    result = a*b;
+    r = a*b;
 
-    pile_empiler(pile,result);
-
+    pile_empiler(pile,r);
     return;
 }
 
 void soustraction(pile_t* pile){
 
-    double a, b, result;
-
+    double a, b, r;
     pile_depiler(pile,&a);
     pile_depiler(pile,&b);
 
-    result = a-b;
+    r = a-b;
 
-    pile_empiler(pile,result);
-
+    pile_empiler(pile,r);
     return;
 }
 
 void division(pile_t* pile){
 
-    double a , b, result;
-
+    double a , b, r;
     pile_depiler(pile,&a);
     pile_depiler(pile,&b);
 
-    result = b/a;
+    r = b/a;
 
-    pile_empiler(pile,result);
-
+    pile_empiler(pile,r);
     return;
 }
