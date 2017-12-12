@@ -13,6 +13,7 @@ typedef struct cellule{
     double valeur;
     node_t* lesTokens;
     node_t* refcellule;
+    node_t* listeSuccesseurs;
     int nbTok;
     int nbValue;
     int nbOper;
@@ -57,5 +58,8 @@ void addition(pile_t* pile);
 void multiplication(pile_t* pile);
 void soustraction(pile_t* pile);
 void division(pile_t* pile);
+
+
+void graphedevaluation(s_cellule* cellule);
 
 #endif //_CELL_H

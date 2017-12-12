@@ -31,14 +31,16 @@ void analyseCellule(s_cellule* cellule){
     cellule->nbOper = 0;
     cellule->nbValue = 0;
     cellule->degrenegatif = 0;
-    
+    cellule->listeSuccesseurs = NULL;
+
 
     node_t *listeCelluleExistant = feuille.listeCellules;
 
     s_cellule* c = NULL;
-    s_cellule* dep = listeCelluleExistant->valeur;
+    s_cellule* tete = listeCelluleExistant->valeur;
     char char1;
     int int1;
+    double double1;
 
     //dupliquer la chaine de la cellule
     char *chaine = strdup(cellule->chaine);
@@ -84,7 +86,7 @@ void analyseCellule(s_cellule* cellule){
             }
 
             //si le token est sous le format "CHAR INT" -> c'est une reference vers une autre cellule
-            if((sscanf(tok,"%c%d",&char1, &int1)==2)){
+            if((sscanf(tok,"%c%d",&char1, &int1)==2) && (sscanf(tok,"%lf",&double1) != 1)){
 
                 while (listeCelluleExistant->suivant != NULL) {
 
@@ -97,11 +99,14 @@ void analyseCellule(s_cellule* cellule){
                         nouvToken->type = REF;
                         nouvToken->value.ref = listeCelluleExistant->valeur;
                         cellule->lesTokens = list_append(cellule->lesTokens, nouvToken); //on ajoute la ref de cellule dans la liste des tokens de la cellule
-                        dep->refcellule = list_insert(dep->refcellule, cellule);
+                        tete->refcellule = list_insert(tete->refcellule, cellule);
+
                         cellule->nbTok++;
                         cellule->nbValue++;
 
-                        c->degrenegatif++;
+                        c->listeSuccesseurs = list_insert(c->listeSuccesseurs, cellule->nom);
+
+                        cellule->degrenegatif++;
                     }
 
                     listeCelluleExistant = listeCelluleExistant->suivant;

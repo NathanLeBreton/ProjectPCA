@@ -7,6 +7,7 @@ int main(){
 
     initialisationOperateur();
 
+    /*
     //test addition valeur + valeur
     s_cellule c;
     char* chainecarac= "= 5 5 +";
@@ -22,8 +23,6 @@ int main(){
     if(c.valeur!=10){
         printf("%lf\n",c.valeur);
     }
-
-
 
 
     //test addition valeur + refcellule
@@ -158,9 +157,6 @@ int main(){
     }
 
 
-
-
-
     //test plus de 2 valeur :
     s_cellule c8;
     char* chaincarac8 = "= 10 5 4 + +";
@@ -216,5 +212,73 @@ int main(){
         printf("%lf\n",c10.valeur);
     }
 
+
+    printf("\n");
+    printf("nb predecesseur de C1: %d\n",c.degrenegatif);
+
+    printf("nb predecesseur de C2: %d\n",c1.degrenegatif);
+
+    printf("nb predecesseur de C3: %d\n",c2.degrenegatif);
+
+    printf("nb predecesseur de C4: %d\n",c3.degrenegatif);
+
+    printf("nb predecesseur de C5: %d\n",c4.degrenegatif);
+    printf("\n");
+
+
+    printf("successeurs de C1 : %s %s\n", c.listeSuccesseurs->valeur, c.listeSuccesseurs->suivant->valeur);
+    printf("successeurs de C2 : %s\n", c1.listeSuccesseurs->valeur);
+
+     */
+
+    s_cellule d3;
+    char* chainecarac= "= 5 5 +";
+    d3.nom = "D3";
+    d3.chaine = chainecarac;
+    feuille.listeCellules = list_append(feuille.listeCellules,&d3);
+    analyseCellule(&d3);
+    evaluation(&d3);
+
+
+    s_cellule d2;
+    char* chainecarac2= "= 5 5 +";
+    d2.nom = "D2";
+    d2.chaine = chainecarac2;
+    feuille.listeCellules = list_append(feuille.listeCellules,&d2);
+    analyseCellule(&d2);
+    evaluation(&d2);
+
+    s_cellule a4;
+    char* chainecarac3= "= D3 +";
+    a4.nom = "A4";
+    a4.chaine = chainecarac3;
+    feuille.listeCellules = list_append(feuille.listeCellules,&a4);
+    analyseCellule(&a4);
+    evaluation(&a4);
+
+
+    s_cellule a5;
+    char* chainecarac4= "= D3 A4 +";
+    a5.nom = "A5";
+    a5.chaine = chainecarac4;
+    feuille.listeCellules = list_append(feuille.listeCellules,&a5);
+    analyseCellule(&a5);
+    evaluation(&a5);
+
+    s_cellule c5;
+    char* chainecarac5= "= D2 A5 +";
+    c5.nom = "C5";
+    c5.chaine = chainecarac5;
+    feuille.listeCellules = list_append(feuille.listeCellules,&c5);
+    analyseCellule(&c5);
+    evaluation(&c5);
+
+    printf("successeurs de D3 : %s %s\n", d3.listeSuccesseurs->valeur, d3.listeSuccesseurs->suivant->valeur);
+    printf("successeurs de D2 : %s\n", d2.listeSuccesseurs->valeur);
+    printf("successeurs de A4 : %s\n", a4.listeSuccesseurs->valeur);
+    printf("successeurs de A5 : %s\n", a5.listeSuccesseurs->valeur);
+
+
     return 0;
+
 }
