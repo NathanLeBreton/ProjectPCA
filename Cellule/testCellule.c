@@ -5,9 +5,10 @@
 
 int main(){
 
+    /*
     initialisationOperateur();
 
-    /*
+
     //test addition valeur + valeur
     s_cellule c;
     char* chainecarac= "= 5 5 +";
@@ -231,6 +232,8 @@ int main(){
 
      */
 
+    initialisationOperateur();
+
     s_cellule d3;
     char* chainecarac= "= 5 5 +";
     d3.nom = "D3";
@@ -274,9 +277,13 @@ int main(){
     evaluation(&c5);
 
     printf("successeurs de D3 : %s %s\n", d3.listeSuccesseurs->valeur, d3.listeSuccesseurs->suivant->valeur);
+    printf("nb succ de D3 : %d\n", d3.nbSucc);
     printf("successeurs de D2 : %s\n", d2.listeSuccesseurs->valeur);
+    printf("nb succ de D2 : %d\n", d2.nbSucc);
     printf("successeurs de A4 : %s\n", a4.listeSuccesseurs->valeur);
+    printf("nb succ de D4 : %d\n", a4.nbSucc);
     printf("successeurs de A5 : %s\n", a5.listeSuccesseurs->valeur);
+    printf("nb succ de D5 : %d\n", a5.nbSucc);
 
 
     return 0;

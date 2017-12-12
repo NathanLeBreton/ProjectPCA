@@ -14,6 +14,7 @@ typedef struct cellule{
     node_t* lesTokens;
     node_t* refcellule;
     node_t* listeSuccesseurs;
+    int nbSucc;
     int nbTok;
     int nbValue;
     int nbOper;

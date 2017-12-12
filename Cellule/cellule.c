@@ -32,12 +32,13 @@ void analyseCellule(s_cellule* cellule){
     cellule->nbValue = 0;
     cellule->degrenegatif = 0;
     cellule->listeSuccesseurs = NULL;
+    cellule->nbSucc = 0;
 
 
     node_t *listeCelluleExistant = feuille.listeCellules;
-
     s_cellule* c = NULL;
     s_cellule* tete = listeCelluleExistant->valeur;
+
     char char1;
     int int1;
     double double1;
@@ -59,13 +60,14 @@ void analyseCellule(s_cellule* cellule){
                 return;
             }
 
-            v = strtod(tok, NULL);
+            //v = strtod(tok, NULL);
             //si l'element de la chaine est une valeur
-            if (sscanf(tok,"%lf",&c)==1) {
+            if (sscanf(tok,"%lf",&double1)==1) {
 
                 nouvToken->type = VALUE;
                 nouvToken->value.cst = v;
                 cellule->lesTokens = list_append(cellule->lesTokens, nouvToken); //on ajoute la valeur dans la liste des tokens de la cellule
+
                 cellule->nbTok++;
                 cellule->nbValue++;
 
@@ -80,6 +82,7 @@ void analyseCellule(s_cellule* cellule){
                     nouvToken->type = OPERATOR;
                     nouvToken->value.operator = operateur[j].operator;
                     cellule->lesTokens = list_append(cellule->lesTokens, nouvToken);  //on ajoute l'operateur dans la liste des tokens de la cellule
+
                     cellule->nbTok++;
                     cellule->nbOper++;
                 }
@@ -105,6 +108,7 @@ void analyseCellule(s_cellule* cellule){
                         cellule->nbValue++;
 
                         c->listeSuccesseurs = list_insert(c->listeSuccesseurs, cellule->nom);
+                        c->nbSucc++;
 
                         cellule->degrenegatif++;
                     }
@@ -113,6 +117,7 @@ void analyseCellule(s_cellule* cellule){
                 }
             }
             //on avance dans le parcours de la chaine pour analyser les caractere suivant
+            listeCelluleExistant = feuille.listeCellules;
             tok = strtok(NULL, " ");
         }
     }
@@ -209,4 +214,11 @@ void division(pile_t* pile){
 
     pile_empiler(pile,r);
     return;
+}
+
+
+void modifCellule(s_cellule* cellule) {
+
+   
+
 }
