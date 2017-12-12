@@ -217,8 +217,10 @@ void division(pile_t* pile){
 }
 
 
+
+
 void modifCellule(s_cellule* cellule) {
 
-   
+
 
 }
