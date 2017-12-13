@@ -107,7 +107,7 @@ void analyseCellule(s_cellule* cellule){
                         cellule->nbTok++;
                         cellule->nbValue++;
 
-                        c->listeSuccesseurs = list_insert(c->listeSuccesseurs, cellule->nom);
+                        c->listeSuccesseurs = list_insert(c->listeSuccesseurs, cellule);
                         c->nbSucc++;
 
                         cellule->degrenegatif++;
