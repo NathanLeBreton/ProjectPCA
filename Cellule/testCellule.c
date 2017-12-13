@@ -5,7 +5,7 @@
 
 int main(){
 
-    /*
+/*
     initialisationOperateur();
 
 
@@ -213,8 +213,8 @@ int main(){
         printf("%lf\n",c10.valeur);
     }
 
-
-    printf("\n");
+*/
+  /*  printf("\n");
     printf("nb predecesseur de C1: %d\n",c.degrenegatif);
 
     printf("nb predecesseur de C2: %d\n",c1.degrenegatif);
@@ -229,10 +229,13 @@ int main(){
 
     printf("successeurs de C1 : %s %s\n", c.listeSuccesseurs->valeur, c.listeSuccesseurs->suivant->valeur);
     printf("successeurs de C2 : %s\n", c1.listeSuccesseurs->valeur);
+*/
 
-     */
 
     initialisationOperateur();
+
+    printf("valeurs avant modifications :\n");
+
 
     s_cellule d3;
     char* chainecarac= "= 5 5 +";
@@ -242,6 +245,7 @@ int main(){
     analyseCellule(&d3);
     evaluation(&d3);
 
+    printf("valeur de D3 : %lf\n",d3.valeur);
 
     s_cellule d2;
     char* chainecarac2= "= 5 5 +";
@@ -251,14 +255,18 @@ int main(){
     analyseCellule(&d2);
     evaluation(&d2);
 
+    printf("valeur de D2 : %lf\n",d2.valeur);
+
+
     s_cellule a4;
-    char* chainecarac3= "= D3 +";
+    char* chainecarac3= "= D3";
     a4.nom = "A4";
     a4.chaine = chainecarac3;
     feuille.listeCellules = list_append(feuille.listeCellules,&a4);
     analyseCellule(&a4);
     evaluation(&a4);
 
+    printf("valeur de A4 : %lf\n",a4.valeur);
 
     s_cellule a5;
     char* chainecarac4= "= D3 A4 +";
@@ -268,6 +276,9 @@ int main(){
     analyseCellule(&a5);
     evaluation(&a5);
 
+
+    printf("valeur de A5 : %lf\n",a5.valeur);
+
     s_cellule c5;
     char* chainecarac5= "= D2 A5 +";
     c5.nom = "C5";
@@ -276,14 +287,42 @@ int main(){
     analyseCellule(&c5);
     evaluation(&c5);
 
+
+    printf("valeur de C5 : %lf\n\n",c5.valeur);
+
+
+
     printf("successeurs de D3 : %s %s\n", d3.listeSuccesseurs->valeur, d3.listeSuccesseurs->suivant->valeur);
     printf("nb succ de D3 : %d\n", d3.nbSucc);
+    printf("degre negatif de D3 :%d\n\n",d3.degrenegatif);
+
     printf("successeurs de D2 : %s\n", d2.listeSuccesseurs->valeur);
     printf("nb succ de D2 : %d\n", d2.nbSucc);
+    printf("degre negatif de D2 :%d\n\n",d2.degrenegatif);
+
     printf("successeurs de A4 : %s\n", a4.listeSuccesseurs->valeur);
     printf("nb succ de D4 : %d\n", a4.nbSucc);
+    printf("degre negatif de A4 :%d\n\n",a4.degrenegatif);
+
     printf("successeurs de A5 : %s\n", a5.listeSuccesseurs->valeur);
     printf("nb succ de D5 : %d\n", a5.nbSucc);
+    printf("degre negatif de A5 :%d\n\n",a5.degrenegatif);
+
+    printf("degre negatif de C5 :%d\n\n",c5.degrenegatif);
+
+    printf("\nvaleurs apres modification :\n");
+
+    d3.valeur=30;
+
+    triTopologique(&d3);
+    printf("valeur de D3 : %lf\n",d3.valeur);
+    printf("valeur de D2 : %lf\n",d2.valeur);
+    printf("valeur de A4 : %lf\n",a4.valeur);
+    printf("valeur de A5 : %lf\n",a5.valeur);
+    printf("valeur de C5 : %lf\n",c5.valeur);
+
+
+
 
 
     return 0;

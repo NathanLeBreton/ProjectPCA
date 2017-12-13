@@ -61,6 +61,6 @@ void soustraction(pile_t* pile);
 void division(pile_t* pile);
 
 
-void graphedevaluation(s_cellule* cellule);
+void triTopologique(s_cellule* cellule);
 
 #endif //_CELL_H

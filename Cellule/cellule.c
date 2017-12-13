@@ -41,7 +41,7 @@ void analyseCellule(s_cellule* cellule){
 
     char char1;
     int int1;
-    double double1;
+    //double double1;
 
     //dupliquer la chaine de la cellule
     char *chaine = strdup(cellule->chaine);
@@ -60,9 +60,9 @@ void analyseCellule(s_cellule* cellule){
                 return;
             }
 
-            //v = strtod(tok, NULL);
+            v = strtod(tok, NULL);
             //si l'element de la chaine est une valeur
-            if (sscanf(tok,"%lf",&double1)==1) {
+            if (sscanf(tok,"%lf",&c)==1) {
 
                 nouvToken->type = VALUE;
                 nouvToken->value.cst = v;
@@ -89,7 +89,7 @@ void analyseCellule(s_cellule* cellule){
             }
 
             //si le token est sous le format "CHAR INT" -> c'est une reference vers une autre cellule
-            if((sscanf(tok,"%c%d",&char1, &int1)==2) && (sscanf(tok,"%lf",&double1) != 1)){
+            if((sscanf(tok,"%c%d",&char1, &int1)==2)){
 
                 while (listeCelluleExistant->suivant != NULL) {
 
@@ -232,11 +232,12 @@ void triTopologique(s_cellule* cellule) {
                 evaluation(c);
                 n2 = c->listeSuccesseurs;
             }
-            if ((n->suivant == NULL) && (n2 != NULL)) {
+            if ((n->suivant == NULL)&&(n2 != NULL)) {
                 n = n2;
             } else {
                 n = n->suivant;
             }
         }
     }
+    return;
 }

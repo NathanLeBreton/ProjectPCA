@@ -18,12 +18,7 @@ node_t *creer_noeud(void){
 }
 
 inline void *list_get_data(const node_t *node){
-
-	if(node!=NULL)
-		return node->valeur;
-	else{
-		return 0;
-	}
+	return node->valeur;
 }
 
 inline void list_set_data(node_t *node, void *data){
