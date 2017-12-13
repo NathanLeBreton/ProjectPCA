@@ -216,6 +216,7 @@ void division(pile_t* pile){
     return;
 }
 
+
 void triTopologique(s_cellule* cellule) {
 
     if(cellule->listeSuccesseurs!=NULL){
