@@ -216,11 +216,26 @@ void division(pile_t* pile){
     return;
 }
 
+void triTopologique(s_cellule* cellule) {
 
+    if(cellule->listeSuccesseurs!=NULL){
+        node_t *n = cellule->listeSuccesseurs;
+        node_t *n2 = NULL;
+        s_cellule *c =NULL;
 
+        while (n!=NULL) {
+            c = list_get_data(n);
+            c->degrenegatif--;
 
-void modifCellule(s_cellule* cellule) {
-
-
-
+            if (c->degrenegatif <= 0) {
+                evaluation(c);
+                n2 = c->listeSuccesseurs;
+            }
+            if ((n->suivant == NULL) && (n2 != NULL)) {
+                n = n2;
+            } else {
+                n = n->suivant;
+            }
+        }
+    }
 }
